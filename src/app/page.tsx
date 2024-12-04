@@ -48,8 +48,6 @@ const saveURL = (title: string, url: string) => {
   if (title !== "null" && title !== "Change the title") {
     localStorage.setItem("urls", JSON.stringify(urls));
   }
-
-  console.log("URL salvs")
 }
 
 function Page() {
@@ -104,7 +102,7 @@ function Page() {
         </button>
       </form>
 
-      <div className="grid grid-cols-4 p-4 gap-4 select-none">
+      <div className="grid grid-cols-1 lg:grid-cols-4 p-4 gap-4 select-none">
         {
           info.map((list, i) => {
             return (
