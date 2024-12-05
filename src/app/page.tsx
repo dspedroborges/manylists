@@ -107,7 +107,7 @@ function Page() {
           info.map((list, i) => {
             return (
               <div key={generateId()} style={{ background: list.color }} className="text-white p-4 rounded-xl relative group border">
-                <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onChange={(e) => {
+                <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onBlur={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
@@ -129,14 +129,14 @@ function Page() {
                       }} />
                     )
                   }
-                  <ColorPicker defaultValue={list.color} onChange={(selectedColor: string) => {
+                  <ColorPicker defaultValue={list.color} onBlur={(selectedColor: string) => {
                     let copy = JSON.parse(JSON.stringify(info));
                     console.log(selectedColor);
                     copy[i].color = selectedColor.replaceAll("#", "");
                     setInfo(copy);
                   }} />
                 </span>
-                <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onChange={(e) => {
+                <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onBlur={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].items = e.target.value.split("\n");
                   setInfo(copy);
@@ -185,7 +185,7 @@ function Page() {
   )
 }
 
-function ColorPicker({ defaultValue, onChange }: { defaultValue?: string, onChange: Function }) {
+function ColorPicker({ defaultValue, onBlur }: { defaultValue?: string, onBlur: Function }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | undefined>(defaultValue);
 
@@ -198,9 +198,9 @@ function ColorPicker({ defaultValue, onChange }: { defaultValue?: string, onChan
 
   useEffect(() => {
     if (selectedColor !== defaultValue) {
-      onChange(selectedColor);
+      onBlur(selectedColor);
     }
-  }, [selectedColor, defaultValue, onChange]);
+  }, [selectedColor, defaultValue, onBlur]);
 
   const colors = ["purple", "goldenrod", "tomato", "darkgreen", "dodgerblue", "saddlebrown", "coral", "teal"];
 
