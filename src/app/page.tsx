@@ -59,7 +59,7 @@ function Page() {
   const [showDelete, setShowDelete] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const router = useRouter();
-  
+
   const generateId = () => Math.random().toString(36).substring(2, 9);
 
   const pushToUrlAndSave = () => {
@@ -107,11 +107,20 @@ function Page() {
           info.map((list, i) => {
             return (
               <div key={generateId()} style={{ background: list.color }} className="text-gray-100 p-4 rounded-xl relative group border">
-                <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onBlur={(e) => {
-                  let copy = JSON.parse(JSON.stringify(info));
-                  copy[i].title = e.target.value;
-                  setInfo(copy);
-                }} />
+                <input
+                  type="text"
+                  defaultValue={list.title}
+                  className="text-2xl font-extralight mb-4 bg-transparent w-full p-2"
+                  onBlur={(e) => {
+                    let copy = JSON.parse(JSON.stringify(info));
+                    copy[i].title = e.target.value;
+                    setInfo(copy);
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement instanceof HTMLElement)
+                      document.activeElement.blur();
+                  }}
+                />
                 <span className="border bg-gray-800 p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute top-0 -right-12 grid grid-cols-1 gap-4 z-50">
                   {
                     showDelete ? (
@@ -136,11 +145,20 @@ function Page() {
                     setInfo(copy);
                   }} />
                 </span>
-                <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onBlur={(e) => {
-                  let copy = JSON.parse(JSON.stringify(info));
-                  copy[i].items = e.target.value.split("\n");
-                  setInfo(copy);
-                }}></textarea>
+                <textarea
+                  name={`${i}`} id={`${i}`}
+                  className="w-full bg-transparent min-h-52 p-2"
+                  defaultValue={list.items.join("\n")}
+                  onBlur={(e) => {
+                    let copy = JSON.parse(JSON.stringify(info));
+                    copy[i].items = e.target.value.split("\n");
+                    setInfo(copy);
+                  }}
+                  onMouseLeave={(e) => {
+                    if (document.activeElement instanceof HTMLElement)
+                      document.activeElement.blur();
+                  }}
+                />
                 <div className="flex justify-between text-white mt-2 opacity-0 group-hover:opacity-100">
                   <BsCaretLeftFill className="text-2xl cursor-pointer hover:scale-90" onClick={() => {
                     let copy = JSON.parse(JSON.stringify(info));
