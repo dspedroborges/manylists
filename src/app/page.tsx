@@ -111,6 +111,7 @@ function Page() {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
+                  saveURL(currentTitle, window.location.href);
                 }} />
                 <span className="border bg-black p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute -top-2 -right-2 flex items-center">
                   {
@@ -133,12 +134,14 @@ function Page() {
                     let copy = JSON.parse(JSON.stringify(info));
                     copy[i].color = e.target.value.replaceAll("#", "");
                     setInfo(copy);
+                    saveURL(currentTitle, window.location.href);
                   }} />
                 </span>
                 <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onBlur={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].items = e.target.value.split("\n");
                   setInfo(copy);
+                  saveURL(currentTitle, window.location.href);
                 }}></textarea>
                 <div className="flex justify-between text-white mt-2 opacity-0 group-hover:opacity-100">
                   <BsCaretLeftFill className="text-2xl cursor-pointer hover:scale-90" onClick={() => {
