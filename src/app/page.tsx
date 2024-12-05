@@ -92,9 +92,9 @@ function Page() {
   }
 
   return (
-    <main className="min-h-screen">
-      <input type="text" className={`bg-transparent text-white text-center rounded-xl text-2xl lg:text-6xl mx-auto block ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
-      <form action={handleAddList} className="flex items-center p-4 gap-4">
+    <main className="min-h-screen py-8 pb-16">
+      <input type="text" className={`bg-transparent text-white text-center rounded-xl text-xl lg:text-6xl mx-auto block ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
+      <form action={handleAddList} className="flex flex-col lg:flex-row items-center p-4 gap-4">
         <input type="text" name="title" className="border h-12 p-2 w-full rounded-xl bg-transparent focus:outline-none text-white" placeholder="List title here" />
         <input type="color" name="color" className="h-12 outline-none bg-transparent hover:scale-90 cursor-pointer rounded-xl" defaultValue={"#0000FF"} />
         <button className="h-12 hover:scale-90">
