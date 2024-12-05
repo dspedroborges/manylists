@@ -106,13 +106,13 @@ function Page() {
         {
           info.map((list, i) => {
             return (
-              <div key={generateId()} style={{ background: list.color }} className="text-white p-4 rounded-xl relative group border">
+              <div key={generateId()} style={{ background: list.color }} className="text-gray-100 p-4 rounded-xl relative group border">
                 <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onBlur={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
                 }} />
-                <span className="border bg-black p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute top-0 -right-12 grid grid-cols-1 gap-4 z-50">
+                <span className="border bg-gray-800 p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute top-0 -right-12 grid grid-cols-1 gap-4 z-50">
                   {
                     showDelete ? (
                       <BsTrash className="text-2xl text-red-400 hover:scale-90 cursor-pointer" onClick={() => {
@@ -185,7 +185,7 @@ function Page() {
   )
 }
 
-function ColorPicker({ defaultValue, onBlur }: { defaultValue?: string, onBlur: Function }) {
+function ColorPicker({ defaultValue, onBlur }: { defaultValue?: string, onBlur?: Function }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | undefined>(defaultValue);
 
@@ -197,12 +197,12 @@ function ColorPicker({ defaultValue, onBlur }: { defaultValue?: string, onBlur: 
   };
 
   useEffect(() => {
-    if (selectedColor !== defaultValue) {
+    if (selectedColor !== defaultValue && onBlur) {
       onBlur(selectedColor);
     }
   }, [selectedColor, defaultValue, onBlur]);
 
-  const colors = ["purple", "goldenrod", "tomato", "darkgreen", "dodgerblue", "saddlebrown", "coral", "teal"];
+  const colors = ["indigo", "darkred", "darkgreen", "dodgerblue", "darkblue", "saddlebrown", "grey", "black"];
 
   return (
     <div className="flex flex-col">
