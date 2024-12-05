@@ -108,7 +108,7 @@ function Page() {
           info.map((list, i) => {
             return (
               <div key={generateId()} style={{ background: '#' + list.color }} className="text-white p-4 rounded-xl relative group border">
-                <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onBlur={(e) => {
+                <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onChange={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
@@ -130,13 +130,13 @@ function Page() {
                       }} />
                     )
                   }
-                  <input type="color" name="color" className="outline-none bg-transparent hover:scale-90 cursor-pointer rounded-xl" defaultValue={'#' + list.color} onBlur={(e) => {
+                  <input type="color" name="color" className="outline-none bg-transparent hover:scale-90 cursor-pointer rounded-xl" defaultValue={'#' + list.color} onChange={(e) => {
                     let copy = JSON.parse(JSON.stringify(info));
                     copy[i].color = e.target.value.replaceAll("#", "");
                     setInfo(copy);
                   }} />
                 </span>
-                <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onBlur={(e) => {
+                <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onChange={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].items = e.target.value.split("\n");
                   setInfo(copy);
