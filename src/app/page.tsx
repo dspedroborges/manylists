@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { BsCaretLeftFill, BsCaretRightFill, BsPlusCircle, BsTrash } from "react-icons/bs";
+import { BsCaretLeftFill, BsCaretRightFill, BsCheckCircleFill, BsDiscFill, BsFloppy, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Gloria_Hallelujah } from "next/font/google";
 
 const gloriaHallelujah = Gloria_Hallelujah({ weight: ["400"], subsets: ["latin"] });
@@ -57,13 +57,15 @@ function Page() {
   const [currentTitle, setCurrentTitle] = useState(title || "Change the title");
   const [info, setInfo] = useState<InfoType[]>([]);
   const [showDelete, setShowDelete] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const router = useRouter();
-
+  
   const generateId = () => Math.random().toString(36).substring(2, 9);
 
-  useEffect(() => {
+  const pushToUrlAndSave = () => {
     router.push(`?title=${currentTitle}&content=${objToString(info)}`);
-  }, [info, currentTitle]);
+    saveURL(currentTitle, window.location.origin + `/?title=${currentTitle}&content=${objToString(info)}`);
+  }
 
   useEffect(() => {
     if (content) {
@@ -82,7 +84,6 @@ function Page() {
 
       setInfo(elements);
     }
-    saveURL(currentTitle, window.location.href);
   }, [content]);
 
   const handleAddList = (formData: FormData) => {
@@ -111,7 +112,6 @@ function Page() {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
-                  saveURL(currentTitle, window.location.href);
                 }} />
                 <span className="border bg-black p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute -top-2 -right-2 flex items-center">
                   {
@@ -134,14 +134,12 @@ function Page() {
                     let copy = JSON.parse(JSON.stringify(info));
                     copy[i].color = e.target.value.replaceAll("#", "");
                     setInfo(copy);
-                    saveURL(currentTitle, window.location.href);
                   }} />
                 </span>
                 <textarea name={`${i}`} id={`${i}`} className="w-full bg-transparent min-h-52 p-2" defaultValue={list.items.join("\n")} onBlur={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].items = e.target.value.split("\n");
                   setInfo(copy);
-                  saveURL(currentTitle, window.location.href);
                 }}></textarea>
                 <div className="flex justify-between text-white mt-2 opacity-0 group-hover:opacity-100">
                   <BsCaretLeftFill className="text-2xl cursor-pointer hover:scale-90" onClick={() => {
@@ -169,6 +167,20 @@ function Page() {
           })
         }
       </div>
+
+      {
+        !isSaved ? (
+          <BsFloppy className="bg-black p-2 rounded-xl text-white fixed bottom-2 right-2 text-4xl hover:scale-90 cursor-pointer" onClick={() => {
+            pushToUrlAndSave();
+            setIsSaved(true);
+            setTimeout(() => {
+              setIsSaved(false);
+            }, 2000);
+          }} />
+        ) : (
+          <BsCheckCircleFill className="bg-black p-2 rounded-xl text-white fixed bottom-2 right-2 text-4xl hover:scale-90 cursor-pointer animate-bounce" onClick={() => pushToUrlAndSave()} />
+        )
+      }
     </main>
   )
 }
