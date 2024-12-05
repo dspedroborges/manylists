@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { BsCaretLeftFill, BsCaretRightFill, BsCheckCircleFill, BsDiscFill, BsFloppy, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Gloria_Hallelujah } from "next/font/google";
 
@@ -88,7 +88,7 @@ function Page() {
 
   const handleAddList = (formData: FormData) => {
     const title = formData.get("title") as string;
-    const color = (formData.get("color") as string).replaceAll("#", "");
+    const color = "dodgerblue";
     setInfo([...info, { title, color, items: [] }]);
   }
 
@@ -97,7 +97,6 @@ function Page() {
       <input type="text" className={`bg-transparent text-white text-center rounded-xl text-xl lg:text-6xl mx-auto block ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
       <form action={handleAddList} className="flex flex-col lg:flex-row items-center p-4 gap-4">
         <input type="text" name="title" className="border h-12 p-2 w-full rounded-xl bg-transparent focus:outline-none text-white" placeholder="List title here" />
-        <input type="color" name="color" className="h-12 outline-none bg-transparent hover:scale-90 cursor-pointer rounded-xl" defaultValue={"#0000FF"} />
         <button className="h-12 hover:scale-90">
           <BsPlusCircle className="text-4xl text-white" />
         </button>
@@ -107,13 +106,13 @@ function Page() {
         {
           info.map((list, i) => {
             return (
-              <div key={generateId()} style={{ background: '#' + list.color }} className="text-white p-4 rounded-xl relative group border">
+              <div key={generateId()} style={{ background: list.color }} className="text-white p-4 rounded-xl relative group border">
                 <input type="text" defaultValue={list.title} className="text-2xl font-extralight mb-4 bg-transparent w-full p-2" onChange={(e) => {
                   let copy = JSON.parse(JSON.stringify(info));
                   copy[i].title = e.target.value;
                   setInfo(copy);
                 }} />
-                <span className="border bg-black p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute -top-2 -right-2 flex items-center">
+                <span className="border bg-black p-2 rounded-xl opacity-0 group-hover:opacity-100 absolute top-0 -right-12 grid grid-cols-1 gap-4 z-50">
                   {
                     showDelete ? (
                       <BsTrash className="text-2xl text-red-400 hover:scale-90 cursor-pointer" onClick={() => {
@@ -130,9 +129,10 @@ function Page() {
                       }} />
                     )
                   }
-                  <input type="color" name="color" className="outline-none bg-transparent hover:scale-90 cursor-pointer rounded-xl" defaultValue={'#' + list.color} onChange={(e) => {
+                  <ColorPicker defaultValue={list.color} onChange={(selectedColor: string) => {
                     let copy = JSON.parse(JSON.stringify(info));
-                    copy[i].color = e.target.value.replaceAll("#", "");
+                    console.log(selectedColor);
+                    copy[i].color = selectedColor.replaceAll("#", "");
                     setInfo(copy);
                   }} />
                 </span>
@@ -183,4 +183,51 @@ function Page() {
       }
     </main>
   )
+}
+
+function ColorPicker({ defaultValue, onChange }: { defaultValue?: string, onChange: Function }) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(defaultValue);
+
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+    if (inputRef.current) {
+      inputRef.current.value = color;
+    }
+  };
+
+  useEffect(() => {
+    if (selectedColor !== defaultValue) {
+      onChange(selectedColor);
+    }
+  }, [selectedColor, defaultValue, onChange]);
+
+  const colors = ["purple", "goldenrod", "tomato", "darkgreen", "dodgerblue", "saddlebrown", "coral", "teal"];
+
+  return (
+    <div className="flex flex-col">
+      {/* <label className="font-bold cursor-pointer" htmlFor="color">
+        Color:
+      </label> */}
+      <input
+        ref={inputRef}
+        type="text"
+        name="color"
+        id="color"
+        className="hidden"
+        defaultValue={defaultValue}
+      />
+      <div className="grid grid-cols-1 gap-2 justify-items-center">
+        {colors.map((color) => (
+          <span
+            key={color}
+            className={`hover:scale-110 cursor-pointer w-4 h-4 ${selectedColor === color ? "border-2" : ""
+              }`}
+            style={{ background: color }}
+            onClick={() => handleColorChange(color)}
+          ></span>
+        ))}
+      </div>
+    </div>
+  );
 }
