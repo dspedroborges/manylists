@@ -93,7 +93,7 @@ function Page() {
   }
 
   return (
-    <main className="min-h-screen py-8 pb-16">
+    <main className="min-h-screen py-8 pb-16 px-16">
       <input type="text" className={`bg-transparent text-white text-center rounded-xl text-xl lg:text-6xl mx-auto block ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
       <form action={handleAddList} className="flex flex-col lg:flex-row items-center p-4 gap-4">
         <input type="text" name="title" className="border h-12 p-2 w-full rounded-xl bg-transparent focus:outline-none text-white" placeholder="List title here" />
@@ -102,7 +102,7 @@ function Page() {
         </button>
       </form>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 p-4 gap-4 select-none">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 select-none py-10">
         {
           info.map((list, i) => {
             return (
